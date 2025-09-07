@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+app = ["listings" ,  'drf_yasg', "corsheaders"]
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,9 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-]
+] + app
 
 MIDDLEWARE = [
+     "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -50,6 +52,15 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'alx_travel_app.urls'
+
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000"
+    
+    ]
+
+
 
 TEMPLATES = [
     {
