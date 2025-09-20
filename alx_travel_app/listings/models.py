@@ -1,3 +1,54 @@
 from django.db import models
+from uuid import uuid4
+from django.contrib.auth.models import  AbstractUser
+from django.core.validators import MinValueValidator , MaxValueValidator
+from django.core.exceptions import ValidationError
 
-# Create your models here.
+def rating_validator(arg):
+    if arg < 1 or arg > 5:
+        raise ValidationError ("Value should be not be lesser than 1 or greater than 5 ")
+
+
+class User(AbstractUser):
+    user_id = models.UUIDField(default=uuid4 , primary_key=True , editable=False)
+    phone_number = models.CharField(max_length=50 , blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    role = models.CharField(max_length=10 , choices= [("host" ,"host") , ("admin" , "admin") , ("guest" ,"guest")])
+
+class Listing(models.Model):
+    
+    property_id = models.UUIDField(primary_key=True , default=uuid4 , editable=False)
+    host_id = models.ForeignKey(User , on_delete=models.CASCADE , related_name="properties")
+    name = models.CharField(max_length=200 )
+    description = models.TextField(max_length=2000 , blank=False)
+    location = models.CharField(max_length=500 , blank=False)
+    pricepernight = models.DecimalField(decimal_places= 2 , blank=False ,max_digits=10)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    
+
+
+class Booking(models.Model):
+    
+    class Status(models.TextChoices):
+        pending = "Pending" , "Pending"
+        confirmed = "Confirmed" , "Confirmed"
+        canceled = "Canceled" , "Canceled"
+    
+    booking_id = models.UUIDField(default=uuid4 , primary_key=True , editable=False )
+    property_id = models.ForeignKey(Listing , on_delete=models.CASCADE , related_name="bookings")
+    user_id = models.ForeignKey(User , on_delete=models.CASCADE , related_name="bookings")
+    start_date = models.DateField(blank=False)
+    end_date = models.DateField(blank = False)
+    total_price = models.DecimalField(max_digits=10 , decimal_places=2 , blank=False)
+    status = models.CharField(max_length=25 , choices=Status.choices , blank=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+
+class Review(models.Model):    
+    review_id = models.UUIDField(default=uuid4 , primary_key=True , editable=False)
+    property_id = models.ForeignKey(Listing , on_delete=models.CASCADE , related_name="reviews")
+    rating = models.SmallIntegerField(validators=[MinValueValidator(1) , MaxValueValidator(5)])
+    comment = models.TextField(max_length=500 , blank=False)
+    created_at = models.DateTimeField(auto_now_add=True)    
