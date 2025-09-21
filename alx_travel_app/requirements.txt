@@ -11,6 +11,7 @@ Django==5.2.6
 django-cors-headers==4.7.0
 djangorestframework==3.16.1
 drf-yasg==1.21.10
+Faker==37.8.0
 inflection==0.5.1
 kombu==5.5.4
 packaging==25.0
