@@ -34,7 +34,7 @@ class ListingSerial(serializers.ModelSerializer):
         fields = "__all__"
         
     
-    def get_host(self , obj):
+    def get_host_name(self , obj):
         
         return obj.host_id.username 
     
@@ -48,7 +48,7 @@ class BookingSerial(serializers.ModelSerializer):
         fields = "__all__"
         
     
-    def get_guest(self , obj):
+    def get_guest_name(self , obj):
         
         return obj.user_id.username
         
@@ -56,13 +56,13 @@ class BookingSerial(serializers.ModelSerializer):
 
 class ReviewSerial(serializers.ModelSerializer):
     
-    property = serializers.SerializerMethodField()
+    property_name = serializers.SerializerMethodField()
     class Meta:
         model = Review
         fields = "__all__"
         
         
-    def get_property(self , obj):
+    def get_property_name(self , obj):
         return obj.property_id.name
     
     
