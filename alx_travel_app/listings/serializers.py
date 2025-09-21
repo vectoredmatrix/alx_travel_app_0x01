@@ -5,7 +5,7 @@ from rest_framework.validators import ValidationError
 
 
 class UserSerial(serializers.ModelSerializer):
-    confirm_password = serializers.CharField(max_length = 100)
+    confirm_password = serializers.CharField(max_length = 100 , write_only = True)
     class Meta:
         model = User
         fields = "__all__"
@@ -27,7 +27,7 @@ class UserSerial(serializers.ModelSerializer):
     
 
 class ListingSerial(serializers.ModelSerializer):
-    host = serializers.SerializerMethodField()
+    host_name = serializers.SerializerMethodField()
     
     class Meta:
         model = Listing
@@ -41,8 +41,8 @@ class ListingSerial(serializers.ModelSerializer):
     
 
 class BookingSerial(serializers.ModelSerializer):
-    guest = serializers.SerializerMethodField()
-    property = Listing(read_only = True , source = "user_id")
+    guest_name = serializers.SerializerMethodField()
+    property = Listing(read_only = True , source = "property_id")
     class Meta:
         model = Booking
         fields = "__all__"
