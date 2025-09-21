@@ -1,8 +1,7 @@
 from rest_framework import serializers
 from .models import User , Listing ,Review ,Booking
 from django.contrib.auth.hashers import make_password
-from rest_framework.validators import ValidationError
-
+from rest_framework.exceptions import ValidationError
 
 class UserSerial(serializers.ModelSerializer):
     confirm_password = serializers.CharField(max_length = 100 , write_only = True)
@@ -42,7 +41,7 @@ class ListingSerial(serializers.ModelSerializer):
 
 class BookingSerial(serializers.ModelSerializer):
     guest_name = serializers.SerializerMethodField()
-    property = Listing(read_only = True , source = "property_id")
+    property = ListingSerial(read_only = True , source = "property_id")
     class Meta:
         model = Booking
         fields = "__all__"
