@@ -27,7 +27,8 @@ class Listing(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     
-
+    def __str__(self) -> str:
+        return self.name
 
 class Booking(models.Model):
     
@@ -45,6 +46,8 @@ class Booking(models.Model):
     status = models.CharField(max_length=25 , choices=Status.choices , blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
     
+    def __str__(self) -> str:
+        return self.property_id.name
 
 class Review(models.Model):    
     id = models.UUIDField(default=uuid4 , primary_key=True , editable=False)

@@ -18,4 +18,14 @@ class ListingViewset(ModelViewSet):
         listings = Listing.objects.filter(host_id = user.pk).select_related("host_id")
         
         return listings
+    
+class BookingViewSet(ModelViewSet):
+    serializer_class = BookingSerial
+    pagination_class = LargeResultsSetPagination
+    
+    def get_queryset(self):
+        
+        userbookings = Booking.objects.filter(user_id = self.request.user).select_related("user_id" , "property_id")
+        
+        return userbookings
 
