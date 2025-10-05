@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-app = ["listings" ,  'drf_yasg', "corsheaders"]
+app = ["listings" ,  'drf_yasg', "corsheaders" ,"rest_framework"]
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,6 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ] + app
+
+
+
+AUTH_USER_MODEL = "listings.User"
+
 
 MIDDLEWARE = [
      "corsheaders.middleware.CorsMiddleware",

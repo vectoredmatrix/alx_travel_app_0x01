@@ -10,15 +10,15 @@ def rating_validator(arg):
 
 
 class User(AbstractUser):
-    user_id = models.UUIDField(default=uuid4 , primary_key=True , editable=False)
+    id = models.UUIDField(default=uuid4 , primary_key=True , editable=False)
     phone_number = models.CharField(max_length=50 , blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     role = models.CharField(max_length=10 , choices= [("host" ,"host") , ("admin" , "admin") , ("guest" ,"guest")])
 
 class Listing(models.Model):
     
-    property_id = models.UUIDField(primary_key=True , default=uuid4 , editable=False)
-    host_id = models.ForeignKey(User , on_delete=models.CASCADE , related_name="properties")
+    id = models.UUIDField(primary_key=True , default=uuid4 , editable=False)
+    host_id = models.ForeignKey(User , on_delete=models.CASCADE , related_name="Listing")
     name = models.CharField(max_length=200 )
     description = models.TextField(max_length=2000 , blank=False)
     location = models.CharField(max_length=500 , blank=False)
@@ -36,7 +36,7 @@ class Booking(models.Model):
         confirmed = "Confirmed" , "Confirmed"
         canceled = "Canceled" , "Canceled"
     
-    booking_id = models.UUIDField(default=uuid4 , primary_key=True , editable=False )
+    id = models.UUIDField(default=uuid4 , primary_key=True , editable=False )
     property_id = models.ForeignKey(Listing , on_delete=models.CASCADE , related_name="bookings")
     user_id = models.ForeignKey(User , on_delete=models.CASCADE , related_name="bookings")
     start_date = models.DateField(blank=False)
@@ -47,8 +47,9 @@ class Booking(models.Model):
     
 
 class Review(models.Model):    
-    review_id = models.UUIDField(default=uuid4 , primary_key=True , editable=False)
+    id = models.UUIDField(default=uuid4 , primary_key=True , editable=False)
     property_id = models.ForeignKey(Listing , on_delete=models.CASCADE , related_name="reviews")
     rating = models.SmallIntegerField(validators=[MinValueValidator(1) , MaxValueValidator(5)])
     comment = models.TextField(max_length=500 , blank=False)
-    created_at = models.DateTimeField(auto_now_add=True)    
+    created_at = models.DateTimeField(auto_now_add=True)   
+    
